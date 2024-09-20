@@ -10,7 +10,7 @@ interface HelpButtonProps {
 }
 
 export default function HelpButton({ children }: HelpButtonProps) {
-    const [isClicked, setIsClicked] = useState<boolean>(false);
+    const [clicked, setClicked] = useState<boolean>(false);
 
     const variants = {
         hidden: { 
@@ -43,10 +43,10 @@ export default function HelpButton({ children }: HelpButtonProps) {
 
     return (
         <>
-            <StyledButton setClicked={setIsClicked}>{children}</StyledButton>
+            <StyledButton setClicked={setClicked} clicked={clicked}>{children}</StyledButton>
 
             <AnimatePresence>
-                {isClicked && (
+                {clicked && (
                     <motion.div 
                         className="flex flex-col absolute left-12 top-0 p-4 rounded-md w-96"
                         style={{backgroundColor: 'rgba(0, 0, 0, 0.9)'}}

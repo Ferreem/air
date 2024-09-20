@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import TileLayer from 'ol/layer/Tile';
@@ -7,20 +7,19 @@ import VectorSource from 'ol/source/Vector';
 import XYZ from 'ol/source/XYZ';
 import OSM from 'ol/source/OSM';
 import { fromLonLat } from 'ol/proj';
-import Draw from 'ol/interaction/Draw';
+import DrawLineButton from './components/DrawLineButton';
 import LayerIcon from './assets/LayerIcon.png';
 import LayersButton from './components/LayersButton';
-import StyledButtonNoTog from './components/StyledButtonNoTog';
 import MinusIcon from './assets/minus.png';
-import PlusIcon from './assets/plus.png'
-import DrawLineIcon from './assets/LineDraw.png'
-import DrawLineButton from './components/DrawLineButton';
+import PlusIcon from './assets/plus.png';
+import DrawLineIcon from './assets/LineDraw.png';
 import MeasureAngelButton from './components/MeasureAngelButton';
-import SelectLineButton from './components/SelectLineButton'
+import SelectLineButton from './components/SelectLineButton';
 import AngleIcon from './assets/angle.png';
 import SelectIcon from './assets/Select.png';
 import QuestionMarkIcon from './assets/questionMark.png';
 import HelpButton from './components/HelpButton';
+import StyledButton from './components/StyledButton';
 import './App.css';
 
 function App() {
@@ -29,7 +28,6 @@ function App() {
   const [vectorLayer, setVectorLayer] = useState(null);
   const [isClickedPlus, setIsClickedPlus] = useState(false);
   const [isClickedMinus, setIsClickedMinus] = useState(false);
-  const [drawInteraction, setDrawInteraction] = useState(null);
 
   useEffect(() => {
     const openStreetLayer = new TileLayer({
@@ -78,25 +76,6 @@ function App() {
     return () => initialMap.setTarget(undefined);
   }, []);
 
-  const toggleDrawing = useCallback((isActive) => {
-    if (!map || !vectorLayer) return;
-
-    if (!isActive) {
-      if (drawInteraction) {
-        map.removeInteraction(drawInteraction);
-        setDrawInteraction(null);
-      }
-    } else {
-      const newDrawInteraction = new Draw({
-        type: 'LineString',
-        source: vectorLayer.getSource(),
-      });
-      map.addInteraction(newDrawInteraction);
-      setDrawInteraction(newDrawInteraction);
-    }
-    console.log('Drawing mode:', isActive); // Debug log
-  }, [map, vectorLayer, drawInteraction]);
-
   useEffect(() => {
     if (map) {
       const view = map.getView();
@@ -141,13 +120,13 @@ function App() {
       </div>
       {/*right UI bar */}
       <div className='absolute right-4 top-28 flex flex-col rounded'>
-        <StyledButtonNoTog setClicked={setIsClickedPlus}>{PlusIcon}</StyledButtonNoTog>
-        <StyledButtonNoTog setClicked={setIsClickedMinus}>{MinusIcon}</StyledButtonNoTog>
+        <StyledButton setClicked={setIsClickedPlus}>{PlusIcon}</StyledButton>
+        <StyledButton setClicked={setIsClickedMinus}>{MinusIcon}</StyledButton>
         <LayersButton changeMapStyle={changeMapStyle}>{LayerIcon}</LayersButton>
       </div>
       {/*middle UI bar */}
       <div className='absolute left-1/2 bottom-4 transform -translate-x-1/2 flex space-x-2'>
-        <DrawLineButton setClicked={toggleDrawing}>{DrawLineIcon}</DrawLineButton>
+        <DrawLineButton map={map} vectorLayer={vectorLayer}>{DrawLineIcon}</DrawLineButton>
         <SelectLineButton>{SelectIcon}</SelectLineButton>
         <MeasureAngelButton>{AngleIcon}</MeasureAngelButton>
       </div>

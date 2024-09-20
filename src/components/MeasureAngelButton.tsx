@@ -6,11 +6,11 @@ interface MeasureAngelButton {
 }
 
 export default function MeasureAngelButton({children}: MeasureAngelButton) {
-    const [isClicked, setIsClicked] = useState<boolean>(false);
+    const [clicked, setClicked] = useState<boolean>(false);
 
     return (
         <>
-            <StyledButton setClicked={setIsClicked}>{children}</StyledButton>
+            <StyledButton setClicked={setClicked} clicked={clicked}>{children}</StyledButton>
         </>
     )
 }

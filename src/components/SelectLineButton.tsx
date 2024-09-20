@@ -1,16 +1,16 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import StyledButton from "./StyledButton";
 
 interface SelectLineButton {
-    children: string;
+    children: React.ReactNode;
 }
 
 export default function SelectLineButton({children}: SelectLineButton) {
-    const [isClicked, setIsClicked] = useState<boolean>(false);
+    const [clicked, setClicked] = useState(false);
 
     return (
         <>
-            <StyledButton setClicked={setIsClicked}>{children}</StyledButton>
+            <StyledButton setClicked={setClicked} clicked={clicked}> {children}</StyledButton>
         </>
     )
 }
