@@ -20,6 +20,7 @@ import SelectIcon from './assets/Select.png';
 import QuestionMarkIcon from './assets/questionMark.png';
 import HelpButton from './components/HelpButton';
 import StyledButton from './components/StyledButton';
+import InfoBox from './components/InfoBox';
 import './App.css';
 
 function App() {
@@ -126,6 +127,7 @@ function App() {
       </div>
       {/*middle UI bar */}
       <div className='absolute left-1/2 bottom-4 transform -translate-x-1/2 flex space-x-2'>
+        <InfoBox />
         <DrawLineButton map={map} vectorLayer={vectorLayer}>{DrawLineIcon}</DrawLineButton>
         <SelectLineButton>{SelectIcon}</SelectLineButton>
         <MeasureAngelButton>{AngleIcon}</MeasureAngelButton>
