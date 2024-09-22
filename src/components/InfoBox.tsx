@@ -1,6 +1,5 @@
 import { color } from "framer-motion";
 
-
 export default function InfoBox({ }) {
   const inlineStyle = {
     backgroundColor: "rgba(0, 0, 0, 0.55)",
@@ -15,7 +14,7 @@ export default function InfoBox({ }) {
     width: "100%",
     height: "100%",
     borderRadius: "0.125rem",
-    color: "gray",
+    color: "white", // Removed duplicate color property
     border: "none",
     WebkitAppearance: "none",
     MozAppearance: "none",
@@ -27,7 +26,6 @@ export default function InfoBox({ }) {
     right: 0,
     bottom: 0,
     padding: "0.5rem",
-    color: "white",
   };
   
   const emptyDivStyle = {
@@ -77,7 +75,7 @@ export default function InfoBox({ }) {
         </div>
         <div className="flex flex-col ml-1 mt-1">
           <div className="flex relative">
-            <input type="radio" id="km" name="distance" value="km" style={radioStyle} />
+            <input type="radio" id="km" name="distance" value="km" style={radioStyle} defaultChecked />
             <label className="text-sm flex absolute left-5 -bottom-1" htmlFor="km">
               km
             </label>
@@ -96,7 +94,7 @@ export default function InfoBox({ }) {
         </div>
         <div className="flex flex-col ml-1 mt-1">
           <div className="flex relative">
-            <input type="radio" id="angle" name="angle" value="angle" style={radioStyle} />
+            <input type="radio" id="angle" name="angle" value="angle" style={radioStyle} defaultChecked />
             <label className="text-sm flex absolute left-5 -bottom-1" htmlFor="angle">
               angle
             </label>
