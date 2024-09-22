@@ -67,7 +67,7 @@ function App() {
         center: fromLonLat([16.611432, 49.193756]),
         zoom: 9,
         maxZoom: 11,
-        minZoom: 4,
+        minZoom: 2,
       }),
     });
 
@@ -126,8 +126,8 @@ function App() {
         <LayersButton changeMapStyle={changeMapStyle}>{LayerIcon}</LayersButton>
       </div>
       {/*middle UI bar */}
-      <div className='absolute left-1/2 bottom-4 transform -translate-x-1/2 flex space-x-2'>
-        <InfoBox />
+      <div className='absolute left-1/2 right-1/ bottom-4 transform -translate-x-1/2 flex space-x-2'>
+
         <DrawLineButton map={map} vectorLayer={vectorLayer}>{DrawLineIcon}</DrawLineButton>
         <SelectLineButton>{SelectIcon}</SelectLineButton>
         <MeasureAngelButton>{AngleIcon}</MeasureAngelButton>
