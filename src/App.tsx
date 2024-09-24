@@ -7,13 +7,14 @@ import VectorSource from 'ol/source/Vector';
 import XYZ from 'ol/source/XYZ';
 import OSM from 'ol/source/OSM';
 import { fromLonLat } from 'ol/proj';
+import { Attribution } from 'ol/control'; // Import Attribution control
 import DrawLineButton from './components/DrawLineButton';
 import LayerIcon from './assets/LayerIcon.png';
 import LayersButton from './components/LayersButton';
 import MinusIcon from './assets/minus.png';
 import PlusIcon from './assets/plus.png';
 import DrawLineIcon from './assets/LineDraw.png';
-import MeasureAngelButton from './components/MeasureAngelButton';
+import MeasureAngleButton from './components/MeasureAngleButton';
 import SelectLineButton from './components/SelectLineButton';
 import AngleIcon from './assets/angle.png';
 import SelectIcon from './assets/Select.png';
@@ -29,18 +30,20 @@ function App() {
   const [vectorLayer, setVectorLayer] = useState(null);
   const [isClickedPlus, setIsClickedPlus] = useState(false);
   const [isClickedMinus, setIsClickedMinus] = useState(false);
+  const [activeButton, setActiveButton] = useState<string | null>(null); // Declare activeButton state
 
   useEffect(() => {
     const openStreetLayer = new TileLayer({
       source: new OSM(),
       visible: true,
       title: 'OpenStreetMap',
+
     });
 
     const transportMap = new TileLayer({
       source: new XYZ({
         url: 'https://tileserver.memomaps.de/tilegen/{z}/{x}/{y}.png',
-        attributions: 'Map <a href="https://memomaps.de/">memomaps.de</a> <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        attributions: '<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }),
       visible: true,
       title: 'Transport'
@@ -49,7 +52,7 @@ function App() {
     const humanitarianMap = new TileLayer({
       source: new XYZ({
         url: 'https://a.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
-        attributions: '© OpenStreetMap contributors. Tiles courtesy of Humanitarian OpenStreetMap Team',
+         attributions: '<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }),
       visible: false,
       title: 'Humanitarian',
@@ -58,6 +61,10 @@ function App() {
     const vectorSource = new VectorSource();
     const newVectorLayer = new VectorLayer({
       source: vectorSource,
+    });
+
+    const attributionControl = new Attribution({
+      collapsible: false, // Disable collapsing
     });
 
     const initialMap = new Map({
@@ -69,6 +76,7 @@ function App() {
         maxZoom: 11,
         minZoom: 2,
       }),
+      controls: [attributionControl], // Add the attribution control
     });
 
     setMap(initialMap);
@@ -103,6 +111,10 @@ function App() {
     }
   }, [isClickedMinus, map]);
 
+  const handleButtonClick = (buttonName: string) => {
+    setActiveButton(activeButton === buttonName ? null : buttonName);
+  };
+
   const changeMapStyle = (styleTitle) => {
     if (!map) return;
     map.getLayers().forEach((layer) => {
@@ -127,10 +139,30 @@ function App() {
       </div>
       {/*middle UI bar */}
       <div className='absolute left-1/2 right-1/ bottom-4 transform -translate-x-1/2 flex space-x-2'>
-
-        <DrawLineButton map={map} vectorLayer={vectorLayer}>{DrawLineIcon}</DrawLineButton>
-        <SelectLineButton>{SelectIcon}</SelectLineButton>
-        <MeasureAngelButton>{AngleIcon}</MeasureAngelButton>
+        <DrawLineButton 
+          map={map} 
+          vectorLayer={vectorLayer} 
+          disabled={activeButton !== null && activeButton !== 'drawLine'}
+          onClick={() => handleButtonClick('drawLine')}
+        >
+          {DrawLineIcon}
+        </DrawLineButton>
+        <SelectLineButton 
+          map={map} 
+          vectorLayer={vectorLayer} 
+          disabled={activeButton !== null && activeButton !== 'selectLine'}
+          onClick={() => handleButtonClick('selectLine')}
+        >
+          {SelectIcon}
+        </SelectLineButton>
+        <MeasureAngleButton 
+          map={map} 
+          vectorLayer={vectorLayer} 
+          disabled={activeButton !== null && activeButton !== 'measureAngle'}
+          onClick={() => handleButtonClick('measureAngle')}
+        >
+          {AngleIcon}
+        </MeasureAngleButton>
       </div>
     </div>
   );

@@ -5,12 +5,14 @@ interface InfoBoxProps {
   coordinates: { lat: number; lon: number }[];
   setCoordinates: (coordinates: { lat: number; lon: number }[]) => void;
   distance: number | null;
+  angle?: number | null;
 }
 
 export default function InfoBox({
   coordinates,
   setCoordinates,
   distance,
+  angle,
 }: InfoBoxProps) {
   const [showMore, setShowMore] = useState(false);
   const [unit, setUnit] = useState<"km" | "miles">("km");
@@ -93,7 +95,7 @@ export default function InfoBox({
         type: "spring",
         stiffness: 200,
         damping: 20,
-        duration: 2.0,
+        duration: 1,
       },
     },
     exit: {
@@ -185,7 +187,9 @@ export default function InfoBox({
           style={inlineStyle}
         >
           <div className="w-20 h-10 relative">
-            <div className="flex items-center" style={emptyDivStyle}>{convertDistance(distance, unit)}</div>
+            <div className="flex items-center" style={emptyDivStyle}>
+              {convertDistance(distance, unit)}
+            </div>
           </div>
           <div className="flex flex-col ml-1 mt-1">
             <div className="flex relative">
@@ -228,7 +232,9 @@ export default function InfoBox({
           style={inlineStyle}
         >
           <div className="w-20 h-10 relative">
-            <div className="flex items-center" style={emptyDivStyle}></div>
+            <div className="flex items-center" style={emptyDivStyle}>
+              {angle !== null ? `${angle}°` : ""}
+            </div>
           </div>
           <div className="flex flex-col ml-1 mt-1">
             <div className="flex relative">
